@@ -1,0 +1,247 @@
+##################################################################
+##
+## Use this file to specify parameters required by the installer at runtime.
+##
+## Instructions for using this file.
+##
+## 1. Create a copy of this template file and fill in the required 
+##    information.  Uncomment and set desired values; all available values 
+##    are listed below.
+##
+## 2. Launch the installer from the command line, using the -inputFile option
+##    to specify the name of your installer initialization file. 
+##
+##    (Windows) setup.exe -inputFile <file_name>
+##    (Mac/Unix) install -inputFile <file_name>
+##
+## NOTE: If you want to run the activation application in silent
+## mode immediately after the installer completes, you must create
+## an activation initialization file and specify its name as the
+## value of the activationPropertiesFile= option. You can also
+## pass the name of the activation initialization file to the
+## installer using the -activationPropertiesFile command line
+## option. 
+##
+################################################################## 
+##
+##
+## SPECIFY INSTALLATION FOLDER
+##
+## Example: 
+##        (Windows) destinationFolder=C:\Program Files\MATLAB\Rxxxx
+##        (Unix) destinationFolder=/usr/local/Rxxxx
+##        (Mac) destinationFolder=/Applications
+##
+
+destinationFolder=<%=install_destination %>
+
+##
+## SPECIFY FILE INSTALLATION KEY 
+##
+## Example: fileInstallationKey=xxxxx-xxxxx-xxxxx-xxxxx.....
+
+fileInstallationKey=<%= licensekey %>
+
+##
+## ACCEPT LICENSE AGREEMENT  
+##
+## You must agree to the license agreement to install MathWorks products.
+## The license agreement can be found in the license.txt file at the
+## root level of the installation DVD.
+##
+## Example: agreeToLicense=yes
+
+agreeToLicense=<%= agree %>
+
+##
+## SPECIFY OUTPUT LOG
+##
+## Specify full path of file into which you want the results of the 
+## installation to be recorded.
+##
+## Example: 
+##            (Windows) outputFile=C:\TEMP\mathworks_<user_name>.log
+##            (Unix/Mac) outputFile=/tmp/mathworks_<user_name>.log
+
+# outputFile=
+
+## SPECIFY INSTALLER MODE 
+## 
+## interactive: Run the installer GUI, waiting for user input on all dialog boxes.
+##
+## silent:      Run the installer without displaying the GUI.
+##
+## automated:  Run the installer GUI, displaying all dialog boxes, but only 
+##             waiting for user input on dialogs that are missing required input.
+##
+## Set to interactive, silent, or automated.
+
+mode=silent
+
+## SPECIFY LENGTH OF TIME DIALOG BOXES ARE DISPLAYED
+##
+##Specify how long the installer dialog boxes are displayed, in milliseconds.
+##
+##NOTE: Use this value only if you set the installer mode to automated.
+##
+## By default, the dialog boxes display on the screen for one second.
+##
+##Example: (To specify a value of 1 second.) automatedModeTimeout=1000
+
+# automatedModeTimeout=
+
+## SPECIFY ACTIVATION PROPERTIES FILE (For non-network license types only)
+##
+## Enter the path to an existing file that contains properties to configure
+## the activation process.
+
+# activationPropertiesFile=
+
+########## Begin: Options for Network License Types #########
+##
+## SPECIFY PATH TO LICENSE FILE (Required for network license types only)
+##
+## This value is required when installing either the License Manager or when 
+## installing as a Network End-User
+## Example: 
+##            (Windows) licensePath=C:\TEMP\license.dat
+##            (Unix) licensePath=/tmp/license.dat
+
+# licensePath=
+
+## CHOOSE TO INSTALL LICENSE MANAGER (For network license types only)
+##
+## Installs license manager files to disk.
+##
+## NOTE: You only need to install the license manager files
+## on your license server.
+##
+## Set to true or false.
+
+# lmgrFiles=
+
+## INSTALL LICENSE MANAGER AS A SERVICE (For network license types only)
+##
+## Configure the license manager as a service on Windows.
+##
+## NOTE: Not applicable for Unix or Mac.
+##
+## NOTE: The lmgr_files option (set in previous step) must also be set to true.
+## 
+## Set to true or false.
+
+# lmgrService=
+
+########## End: Options for Network License Types #########
+
+
+
+################# Begin - Windows Only Options ################ 
+##
+## CHOOSE TO CREATE WINDOWS DESKTOP SHORTCUT
+##
+## Set to true if you would like the installer to create a desktop shortcut icon
+## when MATLAB is installed or false if you don't want the shortcut created.
+## Set to true or false.
+
+# desktopShortcut=
+
+## CHOOSE TO ADD SHORTCUT TO WINDOWS START MENU
+##
+## Set to true if you would like the installer to create a Start Menu shortcut 
+## icon when MATLAB is installed or false if you don't want the shortcut created.
+## Set to true or false.
+
+# startMenuShortcut=
+
+################ End - Windows Only Options ################ 
+
+
+## SPECIFY PRODUCTS YOU WANT TO INSTALL 
+##
+## By default, the installer installs all the products and 
+## documentation for which you are licensed. Products you are not licensed for 
+## are not installed, even if they are listed here.
+##
+## To install specific products, uncomment the line for the product(s) you want
+## to install.
+
+#product.Aerospace_Blockset
+#product.Aerospace_Toolbox
+#product.Bioinformatics_Toolbox
+#product.Communications_System_Toolbox
+#product.Computer_Vision_System_Toolbox
+#product.Control_System_Toolbox
+#product.Curve_Fitting_Toolbox
+#product.DO_Qualification_Kit
+#product.DSP_System_Toolbox
+#product.Data_Acquisition_Toolbox
+#product.Database_Toolbox
+#product.Datafeed_Toolbox
+#product.EDA_Simulator_Link
+#product.Econometrics_Toolbox
+#product.Embedded_Coder
+#product.Filter_Design_HDL_Coder
+#product.Financial_Derivatives_Toolbox
+#product.Financial_Toolbox
+#product.Fixed_Income_Toolbox
+#product.Fixed_Point_Toolbox
+#product.Fuzzy_Logic_Toolbox
+#product.Gauges_Blockset
+#product.Global_Optimization_Toolbox
+#product.IEC_Certification_Kit
+#product.Image_Acquisition_Toolbox
+#product.Image_Processing_Toolbox
+#product.Instrument_Control_Toolbox
+#product.MATLAB
+#product.MATLAB_Builder_EX
+#product.MATLAB_Builder_JA
+#product.MATLAB_Builder_NE
+#product.MATLAB_Coder
+#product.MATLAB_Compiler
+#product.MATLAB_Distributed_Computing_Server
+#product.MATLAB_Report_Generator
+#product.Mapping_Toolbox
+#product.Model_Predictive_Control_Toolbox
+#product.Model_Based_Calibration_Toolbox
+#product.Neural_Network_Toolbox
+#product.OPC_Toolbox
+#product.Optimization_Toolbox
+#product.Parallel_Computing_Toolbox
+#product.Partial_Differential_Equation_Toolbox
+#product.Phased_Array_System_Toolbox
+#product.RF_Toolbox
+#product.Real_Time_Windows_Target
+#product.Robust_Control_Toolbox
+#product.Signal_Processing_Toolbox
+#product.SimBiology
+#product.SimDriveline
+#product.SimElectronics
+#product.SimEvents
+#product.SimHydraulics
+#product.SimMechanics
+#product.SimPowerSystems
+#product.SimRF
+#product.Simscape
+#product.Simulink
+#product.Simulink_3D_Animation
+#product.Simulink_Coder
+#product.Simulink_Control_Design
+#product.Simulink_Design_Optimization
+#product.Simulink_Design_Verifier
+#product.Simulink_Fixed_Point
+#product.Simulink_HDL_Coder
+#product.Simulink_PLC_Coder
+#product.Simulink_Report_Generator
+#product.Simulink_Verification_and_Validation
+#product.Spreadsheet_Link_EX
+#product.Stateflow
+#product.Statistics_Toolbox
+#product.Symbolic_Math_Toolbox
+#product.System_Identification_Toolbox
+#product.SystemTest
+#product.Vehicle_Network_Toolbox
+#product.Wavelet_Toolbox
+#product.xPC_Target
+#product.xPC_Target_Embedded_Option
+
