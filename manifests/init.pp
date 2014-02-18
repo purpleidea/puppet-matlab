@@ -26,14 +26,14 @@ class matlab::vardir {  # module vardir snippet
     $tmp = sprintf("%s/tmp/", regsubst($::puppet_vardir, '\/$', ''))
     # base directory where puppet modules can work and namespace in
     file { "${tmp}":
-      ensure => directory,  # make sure this is a directory
+      ensure  => directory,  # make sure this is a directory
       recurse => false, # don't recurse into directory
-      purge => true,    # purge all unmanaged files
-      force => true,    # also purge subdirs and links
-      owner => root,
-      group => nobody,
-      mode => '0600',
-      backup => false,  # don't backup to filebucket
+      purge   => true,    # purge all unmanaged files
+      force   => true,    # also purge subdirs and links
+      owner   => root,
+      group   => nobody,
+      mode    => '0600',
+      backup  => false,  # don't backup to filebucket
       #before => File["${module_vardir}"],  # redundant
       #require => Package['puppet'],  # no puppet module seen
     }
@@ -42,11 +42,14 @@ class matlab::vardir {  # module vardir snippet
   }
   $module_vardir = sprintf("%s/matlab/", regsubst($tmp, '\/$', ''))
   file { "${module_vardir}":    # /var/lib/puppet/tmp/matlab/
-    ensure => directory,    # make sure this is a directory
+    ensure  => directory,    # make sure this is a directory
     recurse => true,    # recursively manage directory
-    purge => true,      # purge all unmanaged files
-    force => true,      # also purge subdirs and links
-    owner => root, group => nobody, mode => '0600', backup => false,
+    purge   => true,      # purge all unmanaged files
+    force   => true,      # also purge subdirs and links
+    owner   => root,
+    group   => nobody,
+    mode    => '0600',
+    backup  => false,
     require => File["${tmp}"],  # File['/var/lib/puppet/tmp/']
   }
 }
@@ -74,33 +77,33 @@ define matlab::install(     # $namevar matlab release version
 
   # does user accept license ?
   $agree = $licenseagree ? {
-    true => 'yes',
+    true    => 'yes',
     default => 'no',
   }
 
   # make folder to mount on
   file { "/mnt/matlab-${name}":
-    ensure => directory,    # make sure this is a directory
+    ensure  => directory,    # make sure this is a directory
     recurse => false,   # don't manage directory
-    purge => false,     # don't purge unmanaged files
-    force => false,     # don't purge subdirs and links
-    owner => root,
-    group => root,
-    mode => '0555',     # default for iso mounts
-    backup => false,    # don't backup to filebucket
+    purge   => false,     # don't purge unmanaged files
+    force   => false,     # don't purge subdirs and links
+    owner   => root,
+    group   => root,
+    mode    => '0555',     # default for iso mounts
+    backup  => false,    # don't backup to filebucket
   }
 
   # get iso to mount
   # TODO: since there seem to be different iso's for each version, maybe
   # we should add a unique identifier based on the $iso variable here.
   file { "${vardir}/MATHWORKS-${name}.iso":
-    ensure => present,
-    source => "${iso}",
-    owner => root,
-    group => nobody,
-    mode => '0600',   # u=rw,go=
-    backup => false,  # don't backup to filebucket!
-    alias => "matlab_iso.${name}",
+    ensure  => present,
+    source  => "${iso}",
+    owner   => root,
+    group   => nobody,
+    mode    => '0600',   # u=rw,go=
+    backup  => false,  # don't backup to filebucket!
+    alias   => "matlab_iso.${name}",
     require => File["/mnt/matlab-${name}"],
   }
 
@@ -109,57 +112,57 @@ define matlab::install(     # $namevar matlab release version
   # onlyif => the_binary_is_not_installed so that a normal machine
   # doesn't need to have the iso mounted all the time...
   mount { "/mnt/matlab-${name}":
-    ensure => mounted,
-    atboot => true,
-    device => "${vardir}/MATHWORKS-${name}.iso",
-    fstype => 'iso9660',
+    ensure  => mounted,
+    atboot  => true,
+    device  => "${vardir}/MATHWORKS-${name}.iso",
+    fstype  => 'iso9660',
     options => 'loop,ro',
-    dump => '0',    # fs_freq: 0 to skip file system dumps
-    pass => '0',    # fs_passno: 0 to skip fsck on boot
-    alias => "matlab_mount.${name}",
+    dump    => '0',    # fs_freq: 0 to skip file system dumps
+    pass    => '0',    # fs_passno: 0 to skip fsck on boot
+    alias   => "matlab_mount.${name}",
     require => [File["matlab_iso.${name}"]],
   }
 
   # build installer parameters file in our scratch directory
   file { "${vardir}/installer_input.txt.${name}":
-    ensure => present,
+    ensure  => present,
     content => template('matlab/installer_input.txt.erb'),
-    owner => root,
-    group => nobody,
-    mode => '0600', # u=rw,go=r
+    owner   => root,
+    group   => nobody,
+    mode    => '0600', # u=rw,go=r
     require => Mount["matlab_mount.${name}"],
-    alias => "matlab_input.{$name}",
+    alias   => "matlab_input.{$name}",
   }
 
   # install matlab
   exec { "/mnt/matlab-${name}/install -inputFile ${vardir}/installer_input.txt.${name}":
     logoutput => on_failure,
-    creates => "${install_destination}",  # when this folder appears, we assume it got installed
-    require => File["matlab_input.{$name}"],
-    alias => "matlab_install.${name}",
+    creates   => "${install_destination}",  # when this folder appears, we assume it got installed
+    require   => File["matlab_input.{$name}"],
+    alias     => "matlab_install.${name}",
   }
 
   # create 'licenses' directory
   file { "${install_destination}/licenses/":
-    ensure => directory,    # make sure this is a directory
+    ensure  => directory,    # make sure this is a directory
     recurse => true,    # recursively manage directory
-    purge => true,      # purge all unmanaged files
-    force => true,      # also purge subdirs and links
-    owner => root,
-    group => root,
-    mode => '0644',
-    backup => false,    # don't backup to filebucket
+    purge   => true,      # purge all unmanaged files
+    force   => true,      # also purge subdirs and links
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    backup  => false,    # don't backup to filebucket
     require => Exec["matlab_install.${name}"],
   }
 
   # copy over license file to activate
   file { "${install_destination}/licenses/license.lic":
-    ensure => present,
-    source => "${licensefile}",
-    owner => root,
-    group => nobody,
+    ensure  => present,
+    source  => "${licensefile}",
+    owner   => root,
+    group   => nobody,
     # TODO: is there a worry that someone will steal the license ?
-    mode => '0644',   # u=rw,g=r,o=r
+    mode    => '0644',   # u=rw,g=r,o=r
     require => File["${install_destination}/licenses/"],
   }
 }
