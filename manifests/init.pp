@@ -18,14 +18,14 @@
 # TODO: add a matlab-$name.sh file in /etc/profile.d/ to add the matlab bin to path
 
 class matlab::vardir {  # module vardir snippet
-  if "${::puppet_vardirtmp}" == '' {
-    if "${::puppet_vardir}" == '' {
+  if $::puppet_vardirtmp == '' {
+    if $::puppet_vardir == '' {
       # here, we require that the puppetlabs fact exist!
       fail('Fact: $puppet_vardir is missing!')
     }
     $tmp = sprintf("%s/tmp/", regsubst($::puppet_vardir, '\/$', ''))
     # base directory where puppet modules can work and namespace in
-    file { "${tmp}":
+    file { $tmp:
       ensure  => directory,  # make sure this is a directory
       recurse => false, # don't recurse into directory
       purge   => true,    # purge all unmanaged files
@@ -41,7 +41,7 @@ class matlab::vardir {  # module vardir snippet
     $tmp = sprintf("%s/", regsubst($::puppet_vardirtmp, '\/$', ''))
   }
   $module_vardir = sprintf("%s/matlab/", regsubst($tmp, '\/$', ''))
-  file { "${module_vardir}":    # /var/lib/puppet/tmp/matlab/
+  file { $module_vardir:    # /var/lib/puppet/tmp/matlab/
     ensure  => directory,    # make sure this is a directory
     recurse => true,    # recursively manage directory
     purge   => true,      # purge all unmanaged files
@@ -50,7 +50,7 @@ class matlab::vardir {  # module vardir snippet
     group   => nobody,
     mode    => '0600',
     backup  => false,
-    require => File["${tmp}"],  # File['/var/lib/puppet/tmp/']
+    require => File[$tmp],  # File['/var/lib/puppet/tmp/']
   }
 }
 
@@ -98,7 +98,7 @@ define matlab::install(     # $namevar matlab release version
   # we should add a unique identifier based on the $iso variable here.
   file { "${vardir}/MATHWORKS-${name}.iso":
     ensure  => present,
-    source  => "${iso}",
+    source  => $iso,
     owner   => root,
     group   => nobody,
     mode    => '0600',   # u=rw,go=
@@ -137,7 +137,7 @@ define matlab::install(     # $namevar matlab release version
   # install matlab
   exec { "/mnt/matlab-${name}/install -inputFile ${vardir}/installer_input.txt.${name}":
     logoutput => on_failure,
-    creates   => "${install_destination}",  # when this folder appears, we assume it got installed
+    creates   => $install_destination,  # when this folder appears, we assume it got installed
     require   => File["matlab_input.{$name}"],
     alias     => "matlab_install.${name}",
   }
@@ -158,7 +158,7 @@ define matlab::install(     # $namevar matlab release version
   # copy over license file to activate
   file { "${install_destination}/licenses/license.lic":
     ensure  => present,
-    source  => "${licensefile}",
+    source  => $licensefile,
     owner   => root,
     group   => nobody,
     # TODO: is there a worry that someone will steal the license ?
