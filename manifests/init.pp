@@ -131,14 +131,14 @@ define matlab::install(     # $namevar matlab release version
     group   => nobody,
     mode    => '0600', # u=rw,go=r
     require => Mount["matlab_mount.${name}"],
-    alias   => "matlab_input.{$name}",
+    alias   => "matlab_input.{${name}}",
   }
 
   # install matlab
   exec { "/mnt/matlab-${name}/install -inputFile ${vardir}/installer_input.txt.${name}":
     logoutput => on_failure,
     creates   => $install_destination,  # when this folder appears, we assume it got installed
-    require   => File["matlab_input.{$name}"],
+    require   => File["matlab_input.{${name}}"],
     alias     => "matlab_install.${name}",
   }
 
