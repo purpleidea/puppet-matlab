@@ -32,7 +32,7 @@ class matlab::vardir {	# module vardir snippet
 			force => true,		# also purge subdirs and links
 			owner => root,
 			group => nobody,
-			mode => 600,
+			mode => '0600',
 			backup => false,	# don't backup to filebucket
 			#before => File["${module_vardir}"],	# redundant
 			#require => Package['puppet'],	# no puppet module seen
@@ -46,7 +46,7 @@ class matlab::vardir {	# module vardir snippet
 		recurse => true,		# recursively manage directory
 		purge => true,			# purge all unmanaged files
 		force => true,			# also purge subdirs and links
-		owner => root, group => nobody, mode => 600, backup => false,
+		owner => root, group => nobody, mode => '0600', backup => false,
 		require => File["${tmp}"],	# File['/var/lib/puppet/tmp/']
 	}
 }
@@ -86,7 +86,7 @@ define matlab::install(			# $namevar matlab release version
 		force => false,			# don't purge subdirs and links
 		owner => root,
 		group => root,
-		mode => 555,			# default for iso mounts
+		mode => '0555',			# default for iso mounts
 		backup => false,		# don't backup to filebucket
 	}
 
@@ -97,7 +97,7 @@ define matlab::install(			# $namevar matlab release version
 		source => "${iso}",
 		owner => root,
 		group => nobody,
-		mode => 600,		# u=rw,go=
+		mode => '0600',		# u=rw,go=
 		backup => false,	# don't backup to filebucket!
 		ensure => present,
 		alias => "matlab_iso.${name}",
@@ -125,7 +125,7 @@ define matlab::install(			# $namevar matlab release version
 		content => template('matlab/installer_input.txt.erb'),
 		owner => root,
 		group => nobody,
-		mode => 600,	# u=rw,go=r
+		mode => '0600',	# u=rw,go=r
 		require => Mount["matlab_mount.${name}"],
 		ensure => present,
 		alias => "matlab_input.{$name}",
@@ -147,7 +147,7 @@ define matlab::install(			# $namevar matlab release version
 		force => true,			# also purge subdirs and links
 		owner => root,
 		group => root,
-		mode => 644,
+		mode => '0644',
 		backup => false,		# don't backup to filebucket
 		require => Exec["matlab_install.${name}"],
 	}
@@ -158,7 +158,7 @@ define matlab::install(			# $namevar matlab release version
 		owner => root,
 		group => nobody,
 		# TODO: is there a worry that someone will steal the license ?
-		mode => 644,		# u=rw,g=r,o=r
+		mode => '0644',		# u=rw,g=r,o=r
 		ensure => present,
 		require => File["${install_destination}/licenses/"],
 	}
