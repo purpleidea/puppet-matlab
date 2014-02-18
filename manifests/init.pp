@@ -94,12 +94,12 @@ define matlab::install(			# $namevar matlab release version
 	# TODO: since there seem to be different iso's for each version, maybe
 	# we should add a unique identifier based on the $iso variable here.
 	file { "${vardir}/MATHWORKS-${name}.iso":
+		ensure => present,
 		source => "${iso}",
 		owner => root,
 		group => nobody,
 		mode => '0600',		# u=rw,go=
 		backup => false,	# don't backup to filebucket!
-		ensure => present,
 		alias => "matlab_iso.${name}",
 		require => File["/mnt/matlab-${name}"],
 	}
@@ -109,8 +109,8 @@ define matlab::install(			# $namevar matlab release version
 	# onlyif => the_binary_is_not_installed so that a normal machine
 	# doesn't need to have the iso mounted all the time...
 	mount { "/mnt/matlab-${name}":
-		atboot => true,
 		ensure => mounted,
+		atboot => true,
 		device => "${vardir}/MATHWORKS-${name}.iso",
 		fstype => 'iso9660',
 		options => 'loop,ro',
@@ -122,12 +122,12 @@ define matlab::install(			# $namevar matlab release version
 
 	# build installer parameters file in our scratch directory
 	file { "${vardir}/installer_input.txt.${name}":
+		ensure => present,
 		content => template('matlab/installer_input.txt.erb'),
 		owner => root,
 		group => nobody,
 		mode => '0600',	# u=rw,go=r
 		require => Mount["matlab_mount.${name}"],
-		ensure => present,
 		alias => "matlab_input.{$name}",
 	}
 
@@ -154,12 +154,12 @@ define matlab::install(			# $namevar matlab release version
 
 	# copy over license file to activate
 	file { "${install_destination}/licenses/license.lic":
+		ensure => present,
 		source => "${licensefile}",
 		owner => root,
 		group => nobody,
 		# TODO: is there a worry that someone will steal the license ?
 		mode => '0644',		# u=rw,g=r,o=r
-		ensure => present,
 		require => File["${install_destination}/licenses/"],
 	}
 }
