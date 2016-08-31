@@ -52,10 +52,7 @@ class matlab::vardir {	# module vardir snippet
 }
 
 class matlab() {
-	# dependencies for matlab to work
-	package {['libXp', 'libXt', 'libXpm', 'libXmu']:
-		ensure => present,
-	}
+
 }
 
 define matlab::install(			# $namevar matlab release version
